@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-us" ng-app="myApp">
+    <head>
+        <title>Nested Controller and Controller AS</title>
+        
+        <script src="//code.angularjs.org/1.3.0-rc.2/angular.min.js"></script>
+        <script src="app.js"></script>
+    </head>
+    <body>
+        
+        <h1>Nested Controllers and Controller AS</h1>
+    
+        <div ng-controller="parent1Controller">
+            
+            {{ parent1vm.message }}
+        
+            <div ng-controller="child1Controller">
+                
+                {{ child1vm.message }}
+                <br />
+                {{ parent1vm.message }}
+                
+            </div>
+            
+        </div>
+
+        <hr>
+        
+        <div ng-controller="parent2Controller as parent2Ctrl">
+            
+            {{ parent2Ctrl.message }}
+        
+            <div ng-controller="child2Controller as child2Ctrl">
+                
+                {{ child2Ctrl.message }}
+                <br />
+                {{ parent2Ctrl.message }}
+                <br /><br />
+                <input type="text" ng-model="parent2Ctrl.message"/>
+            </div>
+            
+        </div>
+
+        
+    </body>
+</html>
