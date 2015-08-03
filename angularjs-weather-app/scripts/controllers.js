@@ -1,6 +1,7 @@
 (function() {
+    
     // CONTROLLERS
-    angular.module(angular_application_name).controller('homeController',['$scope','cityService', function($scope,cityService) {
+    angular.module(angular_application_name).controller('homeController',['$scope','$location','cityService', function($scope,$location,cityService) {
 
         $scope.city = cityService.city;
 
@@ -9,9 +10,13 @@
             cityService.city = $scope.city;
         });
 
+        $scope.submit = function() {
+            $location.path("/forecast");
+        };
+        
     }]);
 
-    angular.module(angular_application_name).controller('forecastController',['$scope','$resource','$routeParams','cityService', function($scope,$resource,$routeParams,cityService) {
+    angular.module(angular_application_name).controller('forecastController',['$scope','$routeParams','cityService','weatherService', function($scope,$routeParams,cityService,weatherService) {
 
         // Setting service in scope
         $scope.city = cityService.city;
@@ -19,12 +24,8 @@
         // Getting days from path param. Default 2
         $scope.days = $routeParams.days || '2';
 
-        // JSON_CALLBACK needed since call is going outside domain
-        $scope.weatherAPI = $resource("http://api.openweathermap.org/data/2.5/forecast/daily",{callback: "JSON_CALLBACK"}, {get: {method: "JSONP"}});
-
-        // Calling weather site and passing parameters
-        $scope.weatherResut = $scope.weatherAPI.get({ q: $scope.city, cnt: $scope.days });
-
+        $scope.weatherResult = weatherService.GetWeather($scope.city, $scope.days);
+        
         // Function for converting Kelving to Celsius
         $scope.convertToCelsius = function(degK) {
             return Math.round(degK - 273.15);        
