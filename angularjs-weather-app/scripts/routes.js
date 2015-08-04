@@ -1,7 +1,7 @@
 (function() {
     
     // ROUTES
-    angular.module(angular_application_name).config(['$routeProvider', function($routeProvider) {
+    angular.module(weatherApp).config(['$routeProvider', function($routeProvider) {
 
         $routeProvider
 

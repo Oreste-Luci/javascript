@@ -1,7 +1,7 @@
 (function() {
     
     // DIRECTIVES
-    angular.module(angular_application_name).directive("weatherReport", function() {
+    angular.module(weatherApp).directive("weatherReport", function() {
         return {
             restrict: 'E', // Restrict to element only
             templateUrl: 'directives/weatherReport.html',

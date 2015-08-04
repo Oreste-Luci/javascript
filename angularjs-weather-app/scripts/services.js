@@ -1,12 +1,12 @@
 (function() {
 
     // SERVICES
-    angular.module(angular_application_name).service('cityService', function() {
+    angular.module(weatherApp).service('cityService', function() {
 
         this.city = 'New York, NY';
     });
     
-    angular.module(angular_application_name).service('weatherService', ['$resource', function($resource) {
+    angular.module(weatherApp).service('weatherService', ['$resource', function($resource) {
 
         this.GetWeather = function(city, days) {
             

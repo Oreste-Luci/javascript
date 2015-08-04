@@ -1,9 +1,9 @@
-var angular_application_name = 'weatherApp';
+var weatherApp = 'weatherApp';
 
 (function() {
     
     // MODULE
-    var weatherApp = angular.module(angular_application_name,['ngRoute','ngResource']);
+    var weatherAppObject = angular.module(weatherApp,['ngRoute','ngResource']);
     
     
 }());

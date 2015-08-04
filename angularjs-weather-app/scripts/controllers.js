@@ -1,7 +1,7 @@
 (function() {
     
     // CONTROLLERS
-    angular.module(angular_application_name).controller('homeController',['$scope','$location','cityService', function($scope,$location,cityService) {
+    angular.module(weatherApp).controller('homeController',['$scope','$location','cityService', function($scope,$location,cityService) {
 
         $scope.city = cityService.city;
 
@@ -16,7 +16,7 @@
         
     }]);
 
-    angular.module(angular_application_name).controller('forecastController',['$scope','$routeParams','cityService','weatherService', function($scope,$routeParams,cityService,weatherService) {
+    angular.module(weatherApp).controller('forecastController',['$scope','$routeParams','cityService','weatherService', function($scope,$routeParams,cityService,weatherService) {
 
         // Setting service in scope
         $scope.city = cityService.city;
