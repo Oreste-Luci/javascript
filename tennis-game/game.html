@@ -11,7 +11,13 @@
             var canvas;
             var canvasContext;
             var ballX = 50;
-            var ballSpeedX = 5;
+            var ballY = 50;
+            var ballSpeedX = 10;
+            var ballSpeedY = 4;
+            
+            var paddle1Y = 50;
+            const PADDLE_HEIGHT = 100;
+            const PADDLE_WIDTH = 10;
             
             window.onload = function() {
             
@@ -25,15 +31,39 @@
                     drawEverything();
                     
                 }, 1000/framesPerSecond);
+                
+                canvas.addEventListener('mousemove',
+                        function(evt) {
+                            var mousePos = calculateMousePosition(evt);
+                            paddle1Y = mousePos.y - (PADDLE_HEIGHT/2);
+                });
             }
             
             function moveEverything() {
 
                 ballX = ballX + ballSpeedX;
+                ballY = ballY + ballSpeedY;
                 
                 if (ballX < 0 || ballX > canvas.width) {
                     ballSpeedX = ballSpeedX * -1;
                 }                
+
+                if (ballY < 0 || ballY > canvas.height) {
+                    ballSpeedY = ballSpeedY * -1;
+                }                
+
+            }
+            
+            function calculateMousePosition(evt) {
+                var rect = canvas.getBoundingClientRect();
+                var root = document.documentElement;
+                // Accounting for position of game in page.
+                var mouseX = evt.clientX - rect.left - root.scrollLeft;
+                var mouseY = evt.clientY - rect.top - root.scrollTop;
+                return {
+                    x: mouseX,
+                    y: mouseY
+                };
             }
             
             function drawEverything() {
@@ -41,10 +71,10 @@
                 colorRectangle(0,0,canvas.width,canvas.height,'black');
                 
                 // Draws Left Paddle
-                colorRectangle(0,210,10,100,'white');                
+                colorRectangle(0,paddle1Y,PADDLE_WIDTH,PADDLE_HEIGHT,'white');                
                 
                 // Draw the Ball
-                colorCircle(ballX,150,10,'white');
+                colorCircle(ballX,ballY,10,'white');
             }
             
             function colorRectangle(leftX, topY, width, height, drawColor) {
