@@ -16,6 +16,7 @@
             var ballSpeedY = 4;
             
             var paddle1Y = 50;
+            var paddle2Y = 50;
             const PADDLE_HEIGHT = 100;
             const PADDLE_WIDTH = 10;
             
@@ -44,13 +45,35 @@
                 ballX = ballX + ballSpeedX;
                 ballY = ballY + ballSpeedY;
                 
-                if (ballX < 0 || ballX > canvas.width) {
-                    ballSpeedX = ballSpeedX * -1;
-                }                
+                if (ballX < 0) {
+                    if (ballY > paddle1Y && 
+                        ballY < paddle1Y + PADDLE_HEIGHT) {
+                        
+                        ballSpeedX = ballSpeedX * -1;
+                        
+                    } else {
+                        ballReset();
+                    }
+                }               
+                
+                if (ballX > canvas.width) {
+                    if (ballY > paddle2Y && 
+                        ballY < paddle2Y + PADDLE_HEIGHT) {
+                        
+                        ballSpeedX = ballSpeedX * -1;
+                        
+                    } else {
+                        ballReset();
+                    }
+                }
 
-                if (ballY < 0 || ballY > canvas.height) {
+                if (ballY < 0) {
                     ballSpeedY = ballSpeedY * -1;
-                }                
+                }
+                
+                if  (ballY > canvas.height) {
+                    ballSpeedY = ballSpeedY * -1;
+                }
 
             }
             
@@ -73,6 +96,9 @@
                 // Draws Left Paddle
                 colorRectangle(0,paddle1Y,PADDLE_WIDTH,PADDLE_HEIGHT,'white');                
                 
+                // Draws Right Paddle
+                colorRectangle(canvas.width - PADDLE_WIDTH,paddle2Y,PADDLE_WIDTH,PADDLE_HEIGHT,'white');                
+
                 // Draw the Ball
                 colorCircle(ballX,ballY,10,'white');
             }
@@ -88,6 +114,13 @@
                 canvasContext.arc(centerX,centerY,radius,0,Math.PI*2,true);
                 canvasContext.fill();
             }
+            
+            function ballReset() {
+                ballSpeedX = ballSpeedX * -1;
+                ballX = canvas.width / 2;
+                ballY = canvas.height / 2;
+            }
+            
         </script>
 
     </body>
