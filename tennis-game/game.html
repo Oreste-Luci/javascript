@@ -39,6 +39,8 @@
                     
                 }, 1000/framesPerSecond);
                 
+                canvas.addEventListener('mousedown',handleMouseClick);
+                
                 canvas.addEventListener('mousemove',
                         function(evt) {
                             var mousePos = calculateMousePosition(evt);
@@ -55,6 +57,15 @@
                     paddle2Y += 6;
                 } else if (paddle2YCenter > ballY+35) {
                     paddle2Y -= 6;
+                }
+            }
+            
+            function handleMouseClick(evt) {
+            
+                if (showingWinScreen) {
+                    player1Score = 0;
+                    player2Score = 0;
+                    showingWinScreen = false;
                 }
             }
             
@@ -123,16 +134,34 @@
                 };
             }
             
+            function drawNet() {
+            
+                for (i=0; i<canvas.height; i+=40) {
+                    colorRectangle(canvas.width/2-1,i,2,20,'white');
+                }
+            }
+            
             function drawEverything() {
 
                 // Draws Background
                 colorRectangle(0,0,canvas.width,canvas.height,'black');
 
                 if (showingWinScreen) {
+                    
                     canvasContext.fillStyle = 'white';
-                    canvasContext.fillText("Click to continue",100,100);
+                    
+                    if (player1Score >= WINNING_SCORE) {
+                        canvasContext.fillText("Left Player Won!",350,200);
+                    } else if (player2Score >= WINNING_SCORE) {
+                        canvasContext.fillText("Right Player Won!",350,200);
+                    }
+                    
+                    canvasContext.fillText("Click to continue",350,500);
                     return;
                 }
+                
+                // Drawing net in th middle
+                drawNet();
                 
                 // Draws Left Paddle
                 colorRectangle(0,paddle1Y,PADDLE_WIDTH,PADDLE_HEIGHT,'white');                
@@ -163,8 +192,6 @@
             function ballReset() {
                 
                 if (player1Score >= WINNING_SCORE || player2Score >= WINNING_SCORE) {
-                    player1Score = 0;
-                    player2Score = 0;
                     showingWinScreen = true;
                 }
                 
