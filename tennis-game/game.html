@@ -26,10 +26,14 @@
             const PADDLE_HEIGHT = 100;
             const PADDLE_WIDTH = 10;
             
+            const GAME_FONT = "20px Arial";
+            
+            // Main function when window loads
             window.onload = function() {
             
                 canvas = document.getElementById("gameCanvas");
                 canvasContext = canvas.getContext("2d");
+                canvasContext.font = GAME_FONT;
                 
                 var framesPerSecond = 30;
                 setInterval(function() {
@@ -80,7 +84,7 @@
                 ballX += ballSpeedX;
                 ballY += ballSpeedY;
                 
-                if (ballX < 0) {
+                if (ballX <= PADDLE_WIDTH) { // Taking into account ball hitting paddle
                     if (ballY > paddle1Y && 
                         ballY < paddle1Y + PADDLE_HEIGHT) {
                         
@@ -90,13 +94,13 @@
                         
                         ballSpeedY = deltaY * 0.35; // 0.35 dumpenning vertical speed
                         
-                    } else {
+                    } else if (ballX <= 0) {
                         player2Score++; // Must be before ballReset() to determine match win
                         ballReset();
                     }
                 }               
                 
-                if (ballX > canvas.width) {
+                if (ballX >= (canvas.width - PADDLE_WIDTH)) {
                     if (ballY > paddle2Y && 
                         ballY < paddle2Y + PADDLE_HEIGHT) {
                         
@@ -106,7 +110,7 @@
                         
                         ballSpeedY = deltaY * 0.35; // 0.35 dumpenning vertical speed
 
-                    } else {
+                    } else if (ballX >= canvas.width){
                         player1Score++; // Must be before ballReset() to determine match win
                         ballReset();
                     }
@@ -196,8 +200,21 @@
                 }
                 
                 ballSpeedX = ballSpeedX * -1;
-                ballX = canvas.width / 2;
-                ballY = canvas.height / 2;
+
+                if (ballX <= 0) { // Computer Point
+                    
+                    ballX = canvas.width - PADDLE_WIDTH;
+                    ballY = paddle2Y + (PADDLE_HEIGHT / 2);   
+                    
+                } else if (ballX >= canvas.width) {
+
+                    ballX = 0 + PADDLE_WIDTH;
+                    ballY = paddle1Y + (PADDLE_HEIGHT / 2);   
+
+                } else {                
+                    ballX = canvas.width / 2;
+                    ballY = canvas.height / 2;
+                }
             }
             
         </script>
