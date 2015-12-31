@@ -1,3 +1,7 @@
+/*
+    This file demonstrates Javascript First Class Functions
+*/
+
 // Function Statement 
 function greet() {
     console.log('hi');
