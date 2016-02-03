@@ -1,0 +1,96 @@
+<html>
+
+    <head>
+        <title>Oreste's Pong</title>
+    </head>
+    <body>
+        
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <script>
+        
+            var paddle1Y = 100;
+            var paddle2Y = 200;
+            var ballX = 100;
+            var ballY = 100;
+            var ballSpeed = 10;
+            
+            const PADDLE_WIDTH = 10;
+            const PADDLE_HEIGHT = 100;
+            const FRAMES_PER_SECOND = 30;
+            const BALL_RADIUS = 10;
+            
+            window.onload = function() {
+                
+                canvas = document.getElementById("gameCanvas");
+                canvasContext = canvas.getContext("2d");
+                
+                setInterval(function() {
+                    moveEverything();
+                    drawEverything();
+                },1000 / FRAMES_PER_SECOND);
+                
+                canvas.addEventListener('mousemove',function(evt) {                
+                    var mousePos = calculateMousePosition(evt);
+                    paddle1Y = mousePos.y;
+                });
+            }
+
+            function calculateMousePosition(evt) {
+                var rect = canvas.getBoundingClientRect();
+                var root = document.documentElement;
+                // Accounting for position of game in page.
+                var mouseX = evt.clientX - rect.left - root.scrollLeft;
+                var mouseY = evt.clientY - rect.top - root.scrollTop;
+                return {
+                    x: mouseX,
+                    y: mouseY
+                };                
+            }
+            
+            function moveEverything() {
+                
+                if (ballX >= canvas.width) {
+                    ballSpeed = ballSpeed * -1;
+                }
+                
+                if (ballX <= 0) {
+                    ballSpeed = ballSpeed * -1;
+                }
+                    
+                ballX = ballX + ballSpeed;
+                
+            }
+            
+            function drawEverything() {
+                
+                // Background
+                drawRectangle(0,0,canvas.width,canvas.height,'black');
+                
+                // Paddle 1
+                drawRectangle(0,paddle1Y,PADDLE_WIDTH,PADDLE_HEIGHT,'white');
+                
+                // Paddle 2
+                drawRectangle(canvas.width - PADDLE_WIDTH,paddle2Y,PADDLE_WIDTH,PADDLE_HEIGHT,'white');
+
+                // Ball
+                drawBall(ballX,ballY,BALL_RADIUS,'red');
+            }
+            
+            function drawBall(centerX, centerY, radius, drawColor) {
+                canvasContext.fillStyle = drawColor;
+                canvasContext.beginPath();
+                canvasContext.arc(centerX,centerY,radius,0,Math.PI*2,true);
+                canvasContext.fill();
+            }
+            
+            function drawRectangle(posX,posY,width,height,color) {
+                canvasContext.fillStyle = color;
+                canvasContext.fillRect(posX,posY,width,height);                
+            }
+            
+        </script>
+        
+    </body>
+
+</html>
