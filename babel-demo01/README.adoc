@@ -11,7 +11,7 @@ $ npm install -g babel-cli
 // Initialize project
 $ npm init
 
-// Install ES2015 into local project
+// Install ES2015 into the local project
 $ npm install babel-preset-es2015 --save-dev
 ----
 

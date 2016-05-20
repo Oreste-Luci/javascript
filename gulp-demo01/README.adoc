@@ -1,0 +1,37 @@
+= Gulp Demo
+
+== Steps
+
+Initializing project
+
+----
+// Install Gulp
+$ npm install -g gulp
+
+// Initialize project
+$ npm init
+
+// Install ES2015 into the local project
+$ npm install babel-preset-es2015 --save-dev
+
+// Install gulp into the local project
+$ npm install gulp --save-dev
+
+// Install Babel Core
+$ npm install babel-core --save-dev
+
+// Install other modules
+$ npm install browserify babelify vinyl-source-stream --save-dev
+----
+
+To compile use:
+
+----
+$ gulp
+----
+
+To run:
+
+----
+$ open index.html
+----
