@@ -1,0 +1,17 @@
+= Example Forum Web App
+
+To run gulp in watch mode use:
+
+----
+$ gulp watch
+----
+
+To start json-server use:
+
+----
+$ json-server server/db.json
+----
+
+The json-server reads the data that is in the file `server/db.json`.
+
+To install the `json-server` use `nmp install -g json-server`.

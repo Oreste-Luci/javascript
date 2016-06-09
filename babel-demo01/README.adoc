@@ -1,0 +1,32 @@
+= ES2015 With Babel
+
+== Steps
+
+Initializing project
+
+----
+// Install Babel compiler globally.
+$ npm install -g babel-cli
+
+// Initialize project
+$ npm init
+
+// Install ES2015 into the local project
+$ npm install babel-preset-es2015 --save-dev
+----
+
+To transpile a file to ES2015
+----
+$ babel <file name> --presets es2015
+----
+
+This will output the transpiled code into the console. Ex:
+----
+$ babel app2.je.es6 --presets es2015 > app.js
+----
+
+To avoid writing the above command the presets can be saved into `.babelrc` file, and then just:
+
+----
+$ babel app2.js.es6 > app.js
+----
