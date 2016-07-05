@@ -1,0 +1,14 @@
+{
+  "name": "cache",
+  "version": "1.0.0",
+  "description": "Testing Cache Module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Oreste Luci",
+  "license": "ISC",
+  "dependencies": {
+    "node-cache": "^3.2.1"
+  }
+}
