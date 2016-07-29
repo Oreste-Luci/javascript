@@ -1,0 +1,11 @@
+= Blocking and Non Blocking POC
+
+The `app.js` has two end points. One that does a syn call to `www.example.com` and another that does an async call.
+
+They can be benchmarked by using apache benchmark:
+
+----
+$ ab -n 20 -c 5 http://localhost:3000/sync
+
+$ ab -n 20 -c 5 http://localhost:3000/async
+----
