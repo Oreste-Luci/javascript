@@ -1,0 +1,20 @@
+{
+    "name": "mocha-poc",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "covertest": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha",
+        "codetest": "node_modules/.bin/mocha",
+        "test": "npm run codetest && npm run covertest"
+    },
+    "author": "Oreste Luci",
+    "license": "ISC",
+    "devDependencies": {
+        "chai": "^3.5.0",
+        "istanbul": "^0.4.5",
+        "mocha": "^3.0.2",
+        "sinon": "^1.17.5",
+        "sinon-chai": "^2.8.0"
+    }
+}
