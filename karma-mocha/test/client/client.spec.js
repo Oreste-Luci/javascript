@@ -1,6 +1,5 @@
 let chai = require('chai');
 let expect = require('chai').expect;
-chai.use(sinonChai);
 
 describe('Client', () => {
 
