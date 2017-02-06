@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <script src="js/jquery/jquery-3.1.0.min.js"></script>
+    </head>
+    <body>
+        <table>
+            <tr>
+               <td><!-- Menu -->
+                  <div id="catMenu">
+
+                  </div>
+               </td>
+                <td>
+                    <span id="cat1Name"></span><br>
+                    <img id="cat1" src="images/cat1.jpg"><br>
+                    <span id="cat1Count"></span>
+                </td>
+            </tr>
+        </table>
+        <script>
+            var cats = [
+                {
+                    name: 'Cat 1',
+                    image: 'cat1.jpg',
+                    clicks: 0
+                },
+                {
+                    name: 'Cat 2',
+                    image: 'cat2.jpg',
+                    clicks: 0
+                },
+                {
+                    name: 'Cat 3',
+                    image: 'cat3.jpg',
+                    clicks: 0
+                },
+                {
+                    name: 'Cat 4',
+                    image: 'cat4.jpg',
+                    clicks: 0
+                },
+                {
+                    name: 'Cat 5',
+                    image: 'cat5.jpg',
+                    clicks: 0
+                }
+            ];
+
+            $(document).ready(function() {
+
+                for (index in cats) {
+                    alert(cat);
+                }
+
+                /*
+                $('#cat2').click(function(e) {
+                    cat2Count++;
+                    $("#cat2Count").text(cat2Count);
+                });
+                */
+            });
+        </script>
+    </body>
+</html>
