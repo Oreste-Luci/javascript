@@ -9,6 +9,9 @@ class PostShow extends Component {
         this.props.fetchPost(this.props.params.id);
     }
 
+onDeleteClick(){
+    
+}
     render() {
 
         const { post } = this.props;
