@@ -66,7 +66,7 @@ class FieldArraysForm  extends Component{
 
     return (
       <div>
-      {fieldsData.fields.map( fieldObject => {
+      {fieldsData.fields.map( fieldObject => {        
         return (
           <div key={fieldObject.name}>
             <label>{fieldObject.placeholder}</label>
@@ -104,6 +104,11 @@ class FieldArraysForm  extends Component{
   }
 }
 
+const validate = (values) => {
+  console.log('values',values);
+}
+
 export default reduxForm({
-  form: 'FieldArraysForm'
+  form: 'FieldArraysForm',
+  validate
 }, null, { submitData } )(FieldArraysForm)

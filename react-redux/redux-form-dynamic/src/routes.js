@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router';
 import App from './components/app';
-import FieldArraysForm from './components/FieldArraysForm'
-import FieldArraysForm2 from './components/FieldArraysForm2'
+import FieldArraysForm from './components/FieldArraysForm';
+import FieldArraysForm2 from './components/FieldArraysForm2';
 
 export default (
     <Route path="/" component={App}>
