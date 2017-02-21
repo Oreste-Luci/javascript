@@ -8,8 +8,8 @@ class FieldArraysForm  extends Component{
 
     let position = this.props.params.id;
     //console.log('params.id',this.props.params.id);
-    if (position < 0 || position > 1) {
-      console.error('URL index must be >= 0 and <= 1');
+    if (position < 0 || position > 2) {
+      console.error('URL index must be >= 0 and <= 2');
     }
 
     const data = [
@@ -49,6 +49,45 @@ class FieldArraysForm  extends Component{
             placeholder: 'Field 2.2'
           }
         ]
+      },{
+        fields: [
+          {
+            name: 'field-31',
+            component: 'input',
+            type: 'text',
+            placeholder: 'Field 3.1'
+          },
+          {
+            name: 'field-32',
+            component: 'input',
+            type: 'text',
+            placeholder: 'Field 3.2'
+          },
+          {
+            name: 'field-33',
+            component: 'input',
+            type: 'text',
+            placeholder: 'Field 3.3'
+          },
+          {
+            name: 'field-34',
+            component: 'input',
+            type: 'text',
+            placeholder: 'Field 3.4'
+          },
+          {
+            name: 'field-35',
+            component: 'input',
+            type: 'text',
+            placeholder: 'Field 3.5'
+          },
+          {
+            name: 'field-36',
+            component: 'input',
+            type: 'text',
+            placeholder: 'Field 3.6'
+          }
+        ]
       }
     ];
     return data[position];
@@ -66,7 +105,7 @@ class FieldArraysForm  extends Component{
 
     return (
       <div>
-      {fieldsData.fields.map( fieldObject => {        
+      {fieldsData.fields.map( fieldObject => {
         return (
           <div key={fieldObject.name}>
             <label>{fieldObject.placeholder}</label>
