@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="content-type">
+    <meta charset="UTF-8" http-equiv="encoding">
+    <title>Game Blank</title>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <script>
+
+        var brickSound = new Audio('sounds/brick.wav');
+        var paddleSound = new Audio('sounds/paddle.wav');
+        var wallSound = new Audio('sounds/paddle.wav');
+
+        const DEFAULT_BALL_SPEED_X = 5;
+        const DEFAULT_BALL_SPEED_Y = 7;
+
+        var canvas, canvasContext;
+        var ballX = 75;
+        var ballSpeedX = DEFAULT_BALL_SPEED_Y;
+        var ballY = 75;
+        var ballSpeedY = DEFAULT_BALL_SPEED_Y;
+
+        const MAX_PLAYER_LIVES = 3;
+        var currentPlayerLives = MAX_PLAYER_LIVES;
+
+        const BALL_RADIUS = 10;
+
+        const BRICK_COLORS = ['FireBrick','coral','orange','yellow','green','DodgerBlue','CornflowerBlue'];
+        const BRICK_WIDTH = 80;
+        const BRICK_HEIGHT = 20;
+        const BRICK_COLS = 10;
+        const BRICK_ROWS = 14;
+        const BRICK_GAP = 2;
+        var brickGrid = new Array(BRICK_ROWS);
+        var bricksLeft = 0;
+
+        var mouseX, mouseY;
+
+        const PADDLE_WIDTH = 100;
+        const PADDLE_THINKNESS = 10;
+        const PADDLE_DIST_FROM_EDGE = 60;
+        var paddleX = 400;
+
+        function updateMousePosition(event) {
+            var rect = canvas.getBoundingClientRect();
+            var root = document.documentElement;
+
+            mouseX = event.clientX - rect.left - root.scrollLeft;
+            mouseY = event.clientY - rect.top - root.scrollTop;
+
+            paddleX = mouseX - PADDLE_WIDTH/2;
+
+            if (paddleX <= 0 ) {
+                paddleX = 0;
+            }
+
+            if (paddleX + PADDLE_WIDTH >= canvas.width  ) {
+                paddleX = canvas.width - PADDLE_WIDTH;
+            }
+
+            // Cheat for testing only
+            /*
+            ballX = mouseX;
+            ballY = mouseY;
+            ballSpeedX = 4;
+            ballSpeedY = -4;
+            */
+        }
+
+        function updatePaddlePosition(event) {
+            if (event.key === 'ArrowLeft') {
+                paddleX -= 20;
+            }
+            if (event.key === 'ArrowRight') {
+                paddleX += 20;
+            }
+        }
+
+        window.onload = function() {
+            canvas = document.getElementById('gameCanvas');
+            canvasContext = canvas.getContext('2d');
+
+            var framesPerSecond = 30;
+            setInterval(updateAll, 1000/framesPerSecond);
+            brickReset();
+            ballReset();
+
+            canvas.addEventListener('mousemove', updateMousePosition);
+            //document.addEventListener('keydown', updatePaddlePosition, false);
+        };
+
+        function updateAll() {
+            moveAll();
+            drawAll();
+        }
+
+        function ballReset() {
+            // ballX = canvas.width / 2;
+            // ballY = canvas.height / 2;
+            ballX = paddleX + PADDLE_WIDTH / 2;
+            ballY = canvas.height - PADDLE_DIST_FROM_EDGE - PADDLE_THINKNESS - 1;
+            ballSpeedX = DEFAULT_BALL_SPEED_X;
+            ballSpeedY = DEFAULT_BALL_SPEED_Y * -1;
+
+        }
+
+        function moveAll() {
+            ballMove();
+            ballBrickHandling();
+            ballPaddleHandling();
+        }
+
+
+        function ballBrickHandling() {
+            var ballBrickCol = Math.floor(ballX / BRICK_WIDTH);
+            var ballBrickRow = Math.floor(ballY / BRICK_HEIGHT);
+
+            if (ballBrickCol >= 0 && ballBrickCol < BRICK_COLS &&
+                ballBrickRow >= 0 && ballBrickRow < BRICK_ROWS) {
+
+                if (brickGrid[ballBrickRow][ballBrickCol]) {
+
+                    brickGrid[ballBrickRow][ballBrickCol] = false;
+                    bricksLeft--;
+
+                    var previousBallX = ballX - ballSpeedX;
+                    var previousBallY = ballY - ballSpeedY;
+                    var previousBallBrickCol = Math.floor(previousBallX / BRICK_WIDTH);
+                    var previousBallBrickRow = Math.floor(previousBallY / BRICK_HEIGHT);
+
+                    var bothTestFailed = true;
+                    if (previousBallBrickCol != ballBrickCol) {
+                        if (previousBallBrickCol >= 0 && previousBallBrickCol < BRICK_COLS
+                            && brickGrid[ballBrickRow][previousBallBrickCol] === false) {
+                            ballSpeedX *= -1;
+                            bothTestFailed = false;
+                        }
+                    }
+
+                    if (previousBallBrickRow != ballBrickRow) {
+                        if (previousBallBrickRow >= 0 && previousBallBrickRow < BRICK_ROWS
+                            && brickGrid[previousBallBrickRow][ballBrickCol] === false) {
+                            ballSpeedY *= -1;
+                            bothTestFailed = false;
+                        } else {
+                            ballSpeedX *= -1;
+                        }
+                    }
+
+                    if (bothTestFailed) { // Armpit case, prevents ball going rith through
+                        ballSpeedX *= -1;
+                        ballSpeedY *= -1;
+                    }
+
+                    brickSound.play();
+                }
+            }
+        }
+
+        function ballPaddleHandling() {
+            var paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE;
+            var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THINKNESS;
+            var paddleLeftEdgeX = paddleX;
+            var paddleRightEdgeX = paddleLeftEdgeX + PADDLE_WIDTH;
+
+            if (ballY >= paddleTopEdgeY &&       // Below top of paddle
+                ballY <= paddleBottomEdgeY &&    // Above bottom of paddle
+                ballX >= paddleLeftEdgeX &&      // Right of left side of paddle
+                ballX <= paddleRightEdgeX) {     // Left of right side of paddle
+
+                paddleSound.play();
+
+                ballSpeedY *= -1;
+
+                var centerOfPaddleX = paddleX + PADDLE_WIDTH/2;
+                var ballDistFromCenterX = ballX - centerOfPaddleX;
+                ballSpeedX = ballDistFromCenterX * 0.35;
+
+                if (bricksLeft === 0) {
+                    brickReset();
+                }
+            }
+        }
+
+        function ballMove() {
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            var ballHitWall = false;
+
+            if (ballX <= 0 || ballX >= canvas.width) {
+                ballSpeedX *= -1;
+                ballHitWall = true;
+            }
+
+            if (ballY <= 0) {
+                ballHitWall = true;
+                ballSpeedY *= -1;
+            }
+
+            if (ballHitWall) {
+                //brickSound.play();
+                wallSound.play();
+            }
+
+            if (ballY >= canvas.height) {
+                ballReset();
+                currentPlayerLives--;
+                if (currentPlayerLives <= 0) {
+                    brickReset();
+                    currentPlayerLives = MAX_PLAYER_LIVES;
+                }
+            }
+        }
+
+        function drawAll() {
+            drawRectangle(0, 0, canvas.width, canvas.height, 'black'); // Clear Screen
+            drawBall(ballX, ballY, BALL_RADIUS, 'white'); // Draw Ball
+            drawRectangle(paddleX, canvas.height - PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_THINKNESS, 'Cornsilk'); // Paddle
+            drawBricks();
+            drawLives();
+        }
+
+        function drawLives() {
+            for (var i = 1; i < currentPlayerLives; i++) {
+                drawBall(20 * i + (i+2), canvas.height - 20, BALL_RADIUS, 'white'); // Draw Ball
+            }
+        }
+
+        function drawRectangle(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
+            canvasContext.fillStyle = fillColor;
+            canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+        }
+
+        function drawBall(centerX, centerY, radius, fillColor ) {
+            canvasContext.fillStyle = fillColor;
+            canvasContext.beginPath();
+            canvasContext.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
+            canvasContext.fill();
+        }
+
+        function drawText(showWords, textX, TextY, textColor) {
+            canvasContext.fillStyle = textColor;
+            canvasContext.fillText(showWords, textX, TextY);
+
+        }
+
+        function brickReset() {
+            for (var row=0; row<brickGrid.length; row++) {
+                brickGrid[row] = new Array(BRICK_COLS);
+                for (var col=0; col <BRICK_COLS; col++) {
+                    var showBrick = true;
+                    if (row < 3) {
+                        showBrick = false;
+                    }
+                    brickGrid[row][col] = showBrick;
+                    bricksLeft++;
+                }
+            }
+        }
+
+        function drawBricks() {
+            var rowColorCount = -1;
+            var colorIndex = -1;
+            for (var row = 0; row < brickGrid.length; row++) {
+                if (row >= 3) {
+                    rowColorCount++;
+                    if (rowColorCount % 2 === 0) {
+                        colorIndex++;
+                    }
+                }
+                for (var col = 0; col < brickGrid[row].length; col++) {
+                    if (brickGrid[row][col]) {
+                        drawRectangle(BRICK_WIDTH * col, BRICK_HEIGHT * row, BRICK_WIDTH - BRICK_GAP, BRICK_HEIGHT - BRICK_GAP, BRICK_COLORS[colorIndex]);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
